@@ -1,0 +1,13 @@
+interface:
+  display_name: "Dremio MCP"
+  short_description: "Configure and use Dremio MCP"
+  brand_color: "#00AEEF"
+  default_prompt: "Use $dremio-mcp to validate my Dremio MCP setup and inspect catalog metadata."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "dremio-mcp"
+      description: "Local Dremio MCP stdio server"
+      transport: "stdio"
+policy:
+  allow_implicit_invocation: true

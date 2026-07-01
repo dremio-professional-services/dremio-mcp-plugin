@@ -1,0 +1,39 @@
+{
+  "name": "dremio-mcp",
+  "version": "0.1.0",
+  "description": "Dremio MCP local server configuration and skill for Dremio Cloud or self-managed Dremio clusters.",
+  "author": {
+    "name": "Dremio Professional Services",
+    "url": "https://github.com/dremio-professional-services"
+  },
+  "homepage": "https://github.com/dremio-professional-services/dremio-mcp-plugin#readme",
+  "repository": "https://github.com/dremio-professional-services/dremio-mcp-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "dremio",
+    "mcp",
+    "dremio-cloud",
+    "lakehouse",
+    "sql",
+    "catalog",
+    "agent-tools"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Dremio MCP",
+    "shortDescription": "Connect agents to Dremio through MCP",
+    "longDescription": "Install the dremio-mcp MCP configuration for the official Dremio MCP server, with a skill that guides safe setup for Dremio Cloud and self-managed clusters.",
+    "developerName": "Dremio Professional Services",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/dremio-professional-services/dremio-mcp-plugin",
+    "defaultPrompt": [
+      "Use Dremio MCP to inspect catalog metadata and run Dremio SQL safely."
+    ],
+    "brandColor": "#00AEEF"
+  }
+}

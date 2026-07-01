@@ -1,0 +1,20 @@
+{
+  "name": "dremio-mcp-plugin",
+  "interface": {
+    "displayName": "Dremio MCP Plugin"
+  },
+  "plugins": [
+    {
+      "name": "dremio-mcp",
+      "source": {
+        "source": "local",
+        "path": "./plugins/dremio-mcp"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

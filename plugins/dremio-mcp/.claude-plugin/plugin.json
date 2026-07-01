@@ -1,0 +1,19 @@
+{
+  "name": "dremio-mcp",
+  "version": "0.1.0",
+  "description": "Dremio MCP local server configuration and skill for Dremio Cloud or self-managed Dremio clusters.",
+  "author": {
+    "name": "Dremio Professional Services"
+  },
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "keywords": [
+    "dremio",
+    "mcp",
+    "dremio-cloud",
+    "lakehouse",
+    "sql",
+    "catalog",
+    "agent-tools"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "dremio-mcp": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "set -eu; : \"${DREMIOAI_DREMIO__URI:?DREMIOAI_DREMIO__URI is required for dremio-mcp MCP}\"; : \"${DREMIOAI_DREMIO__PAT:?DREMIOAI_DREMIO__PAT is required for dremio-mcp MCP}\"; export DREMIOAI_TOOLS__SERVER_MODE=\"${DREMIOAI_TOOLS__SERVER_MODE:-FOR_SELF,FOR_DATA_PATTERNS}\"; export DREMIOAI_DREMIO__ENABLE_SEARCH=\"${DREMIOAI_DREMIO__ENABLE_SEARCH:-true}\"; export DREMIOAI_DREMIO__ALLOW_DML=\"${DREMIOAI_DREMIO__ALLOW_DML:-true}\"; cd /tmp; exec uvx --from git+https://github.com/dremio/dremio-mcp.git dremio-mcp-server run --cfg /tmp/dremio-ps-mcp/dremio-cluster.yaml --no-log-to-file --log-level WARNING"
+      ],
+      "env": {
+        "PYTHONWARNINGS": "ignore"
+      },
+      "env_vars": [
+        "DREMIOAI_DREMIO__URI",
+        "DREMIOAI_DREMIO__PAT",
+        "DREMIOAI_DREMIO__PROJECT_ID",
+        "DREMIOAI_TOOLS__SERVER_MODE",
+        "DREMIOAI_DREMIO__ENABLE_SEARCH",
+        "DREMIOAI_DREMIO__ALLOW_DML"
+      ],
+      "note": "Local Dremio MCP server for a Dremio cluster or Dremio Cloud project. Requires DREMIOAI_DREMIO__URI and DREMIOAI_DREMIO__PAT in the agent environment; DREMIOAI_DREMIO__URI should include https:// and the port, for example https://dremio.example.com:443. Set DREMIOAI_DREMIO__PROJECT_ID for Dremio Cloud projects."
+    }
+  }
+}

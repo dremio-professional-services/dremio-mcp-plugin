@@ -1,0 +1,26 @@
+{
+  "name": "dremio-mcp-plugin",
+  "owner": {
+    "name": "Dremio Professional Services"
+  },
+  "metadata": {
+    "description": "Claude Code plugin marketplace for the Dremio MCP local server configuration"
+  },
+  "plugins": [
+    {
+      "name": "dremio-mcp",
+      "source": "./plugins/dremio-mcp",
+      "description": "Dremio MCP local server configuration and skill for Dremio Cloud or self-managed Dremio clusters",
+      "version": "0.1.0",
+      "keywords": [
+        "dremio",
+        "mcp",
+        "dremio-cloud",
+        "lakehouse",
+        "sql",
+        "catalog",
+        "agent-tools"
+      ]
+    }
+  ]
+}
