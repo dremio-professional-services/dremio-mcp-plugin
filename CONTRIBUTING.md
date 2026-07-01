@@ -20,6 +20,8 @@ When changing the version, update:
 - `plugins/dremio-mcp/.codex-plugin/plugin.json`
 - `plugins/dremio-mcp/.claude-plugin/plugin.json`
 
+When changing runtime behavior, update `docs/installation.md` and `docs/architecture.md` if the user-facing setup or process model changes.
+
 ## Pull Requests
 
 Keep changes scoped. Do not add wrapper scripts, tests, generated config files, or credentials unless the repository direction changes explicitly.

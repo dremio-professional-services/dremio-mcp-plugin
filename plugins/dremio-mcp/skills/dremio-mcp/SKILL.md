@@ -10,16 +10,16 @@ Use the `dremio-mcp` MCP server from this plugin when an agent needs live Dremio
 ## Setup Checks
 
 1. Confirm `uvx` is available: `uvx --version`.
-2. Confirm Python 3.11+ is available to `uv`: `uv python find`.
-3. Confirm the runtime environment has:
+2. Confirm the runtime environment has:
    - `DREMIOAI_DREMIO__URI`: `prod`, `prodemea`, or a full Dremio coordinator/API URL.
    - `DREMIOAI_DREMIO__PAT`: personal access token or compatible secret.
    - `DREMIOAI_DREMIO__PROJECT_ID`: required for Dremio Cloud projects.
-4. If read-only access is required, set `DREMIOAI_DREMIO__ALLOW_DML=false` before starting the agent.
+3. If read-only access is required, set `DREMIOAI_DREMIO__ALLOW_DML=false` before starting the agent.
+4. On Windows, restart Codex or Claude Code after changing user-level environment variables so the process inherits them.
 
 ## Defaults
 
-The MCP config preserves the validated marketplace defaults:
+The MCP config sets these cross-platform defaults:
 
 ```text
 DREMIOAI_TOOLS__SERVER_MODE=FOR_SELF,FOR_DATA_PATTERNS
@@ -35,4 +35,4 @@ Treat `ALLOW_DML=true` as write-capable. It can allow the MCP server to create D
 - Never commit PATs, project-specific endpoints, or generated Dremio config files.
 - Prefer environment variables supplied by the user/session over editing plugin files.
 - Before using write-capable tools, state that `ALLOW_DML=true` is active and ask for confirmation when the action may create or modify Dremio objects.
-- If the MCP server fails to start, first check missing env vars, `uvx`, Python version, and whether the Dremio URI matches the deployment type.
+- If the MCP server fails to start or connects to an unexpected target, first check missing env vars, `uvx`, Python version, the Dremio URI, a project-local `.env`, and `~/.config/dremioai/config.yaml`.

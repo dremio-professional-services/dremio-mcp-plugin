@@ -1,6 +1,6 @@
 {
   "name": "dremio-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Dremio MCP local server configuration and skill for Dremio Cloud or self-managed Dremio clusters.",
   "author": {
     "name": "Dremio Professional Services",
@@ -23,7 +23,7 @@
   "interface": {
     "displayName": "Dremio MCP",
     "shortDescription": "Connect agents to Dremio through MCP",
-    "longDescription": "Install the dremio-mcp MCP configuration for the official Dremio MCP server, with a skill that guides safe setup for Dremio Cloud and self-managed clusters.",
+    "longDescription": "Install the cross-platform dremio-mcp MCP configuration for the official Dremio MCP server, with a skill that guides safe setup for Dremio Cloud and self-managed clusters.",
     "developerName": "Dremio Professional Services",
     "category": "Developer Tools",
     "capabilities": [

@@ -2,14 +2,15 @@
 
 Single-plugin marketplace for installing the Dremio cluster MCP configuration and companion skill in Codex or Claude Code.
 
-The plugin exposes a `dremio-mcp` MCP entry derived from the validated Dremio Professional Services marketplace configuration. It starts the official [`dremio/dremio-mcp`](https://github.com/dremio/dremio-mcp) server through `uvx`. It does not store Dremio endpoints, PATs, or project IDs in the repository.
+The plugin exposes a cross-platform `dremio-mcp` MCP entry for the official [`dremio/dremio-mcp`](https://github.com/dremio/dremio-mcp) server. It starts the server locally through `uvx` for each Codex or Claude Code session. It does not store Dremio endpoints, PATs, or project IDs in the repository.
 
 ## Install
+
+See [docs/installation.md](docs/installation.md) for macOS and Windows setup, and [docs/config.md](docs/config.md) for configuration precedence.
 
 Prerequisites:
 
 - `uvx` from the [uv package manager](https://docs.astral.sh/uv/)
-- Python 3.11 or newer available to `uv`
 - Git
 - A Dremio PAT and endpoint. Dremio documents MCP setup and endpoint choices in the [Dremio MCP guide](https://docs.dremio.com/dremio-cloud/ai-integration/mcp-server/).
 
@@ -61,6 +62,9 @@ Then run `/reload-plugins` inside Claude Code or start a fresh session. Claude C
 ```text
 .agents/plugins/marketplace.json      Codex marketplace index
 .claude-plugin/marketplace.json       Claude Code marketplace index
+docs/installation.md                  macOS and Windows install guide
+docs/config.md                        environment, .env, and config.yaml precedence
+docs/architecture.md                  local MCP runtime architecture
 plugins/dremio-mcp/.mcp.json          dremio-mcp MCP entry
 plugins/dremio-mcp/skills/dremio-mcp/ companion skill
 ```

@@ -1,6 +1,6 @@
 {
   "name": "dremio-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Dremio MCP local server configuration and skill for Dremio Cloud or self-managed Dremio clusters.",
   "author": {
     "name": "Dremio Professional Services"
