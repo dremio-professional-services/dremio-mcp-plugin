@@ -4,6 +4,13 @@ All notable changes to this project are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2026-07-02
+
+### Changed
+
+- Updated the architecture diagram to show separate local MCP server processes targeting different remote Dremio instances.
+- Clarified that each agent session can inherit different Dremio connection settings.
+
 ## [0.2.0] - 2026-07-01
 
 ### Changed

@@ -16,6 +16,7 @@ The process is session-scoped:
 - Session B starts a separate local MCP server process.
 - Processes communicate with the agent over MCP stdio.
 - Processes read Dremio connection settings from the environment.
+- Each session can inherit different Dremio connection settings, so Session A and Session B can point to different Dremio Cloud projects or self-managed clusters.
 - The upstream server can also read `.env` and the default `~/.config/dremioai/config.yaml` fallback described in [config.md](config.md).
 - No shared daemon is expected or required.
 
@@ -42,7 +43,7 @@ The process is session-scoped:
 
 ## Process Isolation
 
-The local server is not shared across sessions. This keeps lifecycle and credentials tied to the agent process that started it. Closing the session ends that session's local MCP process.
+The local server is not shared across sessions. This keeps lifecycle, target Dremio instance, and credentials tied to the agent process that started it. Closing the session ends that session's local MCP process.
 
 ## Security Boundary
 
