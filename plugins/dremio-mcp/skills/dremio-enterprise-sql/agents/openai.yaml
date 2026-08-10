@@ -1,0 +1,6 @@
+interface:
+  display_name: "Dremio Enterprise SQL"
+  short_description: "Dremio Enterprise 26.x SQL reference"
+  default_prompt: "Use $dremio-enterprise-sql only for SQL syntax, SQL review, system-table SQL, or metadata-query work after both Dremio Enterprise edition and version 26.x are explicitly established. Clarify a missing edition or version before loading detailed references; self-managed alone is insufficient, and this skill does not cover Community, non-26.x releases, Cloud, or broad operational questions."
+policy:
+  allow_implicit_invocation: true

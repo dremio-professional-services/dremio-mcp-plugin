@@ -1,18 +1,21 @@
 # Installation
 
-This guide installs the `dremio-mcp` plugin and configures the environment variables used by the local Dremio MCP server.
+This guide installs the `dremio-mcp` plugin and configures the local Dremio MCP server. Installing the plugin registers the MCP server definition and makes its three skills available.
 
-The plugin starts one local MCP server process per Codex or Claude Code session. Secrets stay outside the repository and are read from the launching process environment.
+The plugin starts one local MCP server process through `uvx` per Codex or Claude Code session, so `uvx` and Python are plugin runtime prerequisites. The two SQL reference skills' bundled content and answers remain offline: they do not depend on MCP connectivity, a PAT, an endpoint, environment configuration, or a live Dremio connection. Secrets stay outside the repository and are read from the launching process environment.
 
-For full precedence between process environment variables, `.env`, and `~/.config/dremioai/config.yaml`, see [config.md](config.md).
+For MCP connection-setting precedence between process environment variables, `.env`, and `~/.config/dremioai/config.yaml`, see [config.md](config.md).
 
-## Prerequisites
+## Plugin Installation And Runtime Prerequisites
 
 - Git
 - `uvx` from `uv`
 - Python 3.11 or newer available to `uv`
 - Codex CLI when installing for Codex
 - Claude Code CLI when installing for Claude Code
+
+## MCP Connection Prerequisites
+
 - A Dremio PAT
 - A Dremio endpoint:
   - Dremio Cloud shortcut such as `prod` or `prodemea`
@@ -20,7 +23,7 @@ For full precedence between process environment variables, `.env`, and `~/.confi
 
 ## macOS
 
-Install `uv` with Homebrew:
+Install `uv` for the plugin runtime with Homebrew:
 
 ```bash
 brew install uv
@@ -52,7 +55,7 @@ If `uv` cannot find a suitable Python runtime:
 uv python install 3.11
 ```
 
-Set environment variables in the shell that starts Codex or Claude Code:
+To use the MCP server against Dremio, set environment variables in the shell that starts Codex or Claude Code:
 
 ```bash
 export DREMIOAI_DREMIO__URI=prodemea
@@ -84,7 +87,7 @@ Start a new Codex or Claude Code session after installation.
 
 ## Windows
 
-Install `uv` with WinGet:
+Install `uv` for the plugin runtime with WinGet:
 
 ```powershell
 winget install --id=astral-sh.uv -e
@@ -122,7 +125,7 @@ If `uv` cannot find a suitable Python runtime:
 uv python install 3.11
 ```
 
-Set user-level environment variables:
+To use the MCP server against Dremio, set user-level environment variables:
 
 ```powershell
 [Environment]::SetEnvironmentVariable("DREMIOAI_DREMIO__URI", "prodemea", "User")
@@ -154,7 +157,7 @@ claude plugin install dremio-mcp@dremio-mcp-plugin
 
 Start a new Codex or Claude Code session after installation.
 
-## Runtime Defaults
+## MCP Runtime Defaults
 
 The plugin sets these defaults in `.mcp.json`:
 

@@ -4,14 +4,14 @@
     "name": "Dremio Professional Services"
   },
   "metadata": {
-    "description": "Claude Code plugin marketplace for the Dremio MCP local server configuration"
+    "description": "Claude Code plugin marketplace for local Dremio MCP configuration and Dremio Cloud and Enterprise SQL skills"
   },
   "plugins": [
     {
       "name": "dremio-mcp",
       "source": "./plugins/dremio-mcp",
-      "description": "Dremio MCP local server configuration and skill for Dremio Cloud or self-managed Dremio clusters",
-      "version": "0.2.1",
+      "description": "Local Dremio MCP configuration plus independent Dremio Cloud and Enterprise SQL skills",
+      "version": "0.3.0",
       "keywords": [
         "dremio",
         "mcp",

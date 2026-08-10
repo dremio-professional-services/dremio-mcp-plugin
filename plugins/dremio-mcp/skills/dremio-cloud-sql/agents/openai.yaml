@@ -1,0 +1,6 @@
+interface:
+  display_name: "Dremio Cloud SQL"
+  short_description: "Current Dremio Cloud SQL reference"
+  default_prompt: "Use $dremio-cloud-sql only for SQL syntax, SQL review, system-table SQL, or metadata-query work after current non-Classic Dremio Cloud is explicitly established. Clarify the product boundary before loading detailed references when it is uncertain; do not use this skill for Cloud Classic or broad operational questions."
+policy:
+  allow_implicit_invocation: true

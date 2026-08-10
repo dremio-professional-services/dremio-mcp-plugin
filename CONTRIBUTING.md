@@ -2,7 +2,7 @@
 
 ## Development
 
-Keep this repository small. It should contain the marketplace metadata, plugin manifests, `.mcp.json`, the `dremio-mcp` skill, and standard repository documentation.
+Keep this repository small. It should contain the marketplace metadata, plugin manifests, `.mcp.json`, the `dremio-mcp` configuration skill, the independent `dremio-cloud-sql` and `dremio-enterprise-sql` skills, and standard repository documentation. Maintain the SQL skills as public-documentation-only and platform-isolated; do not introduce shared SQL references or Cloud/Enterprise availability assumptions.
 
 ## Versioning
 

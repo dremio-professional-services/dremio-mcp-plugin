@@ -1,20 +1,23 @@
 # Dremio MCP Plugin
 
-Single-plugin marketplace for installing the Dremio cluster MCP configuration and companion skill in Codex or Claude Code.
+Single-plugin marketplace for installing the local Dremio MCP configuration and three bundled skills in Codex or Claude Code. The `dremio-mcp` skill covers MCP setup; the `dremio-cloud-sql` and `dremio-enterprise-sql` skills provide independent, platform-specific SQL guidance for current Dremio Cloud and Dremio Enterprise 26.x.
 
-The plugin exposes a cross-platform `dremio-mcp` MCP entry for the official [`dremio/dremio-mcp`](https://github.com/dremio/dremio-mcp) server. It starts the server locally through `uvx` for each Codex or Claude Code session. It does not store Dremio endpoints, PATs, or project IDs in the repository.
+The plugin exposes a cross-platform `dremio-mcp` MCP entry for the official [`dremio/dremio-mcp`](https://github.com/dremio/dremio-mcp) server. It starts the server locally through `uvx` for each Codex or Claude Code session. The SQL skills do not depend on MCP connectivity: each loads only its own topic-scoped references derived from public Dremio documentation, without a shared SQL reference core. The repository does not store Dremio endpoints, PATs, or project IDs.
 
 ## Install
 
-See [docs/installation.md](docs/installation.md) for macOS and Windows setup, and [docs/config.md](docs/config.md) for configuration precedence.
+See [docs/installation.md](docs/installation.md) for macOS and Windows setup. For MCP connection settings, see [docs/config.md](docs/config.md) for configuration precedence.
 
-Prerequisites:
+Plugin installation and runtime prerequisites:
 
-- `uvx` from the [uv package manager](https://docs.astral.sh/uv/)
 - Git
-- A Dremio PAT and endpoint. Dremio documents MCP setup and endpoint choices in the [Dremio MCP guide](https://docs.dremio.com/dremio-cloud/ai-integration/mcp-server/).
+- Codex CLI or Claude Code CLI
+- `uvx` from the [uv package manager](https://docs.astral.sh/uv/)
+- Python 3.11 or newer available to `uv`
 
-Set connection values in the environment that launches your agent:
+The installed plugin registers the MCP server and starts it through `uvx` for each Codex or Claude Code session, so `uvx` and Python are runtime prerequisites. The two SQL reference skills' bundled content and answers remain offline: they do not depend on MCP connectivity, a PAT, an endpoint, environment configuration, or a live Dremio connection.
+
+To use the local MCP server against Dremio, provide a Dremio PAT and endpoint. Dremio documents MCP setup and endpoint choices in the [Dremio MCP guide](https://docs.dremio.com/dremio-cloud/ai-integration/mcp-server/). Set the connection values in the environment that launches your agent:
 
 ```bash
 export DREMIOAI_DREMIO__URI=prodemea
@@ -22,7 +25,7 @@ export DREMIOAI_DREMIO__PAT="$(cat ~/.dremio/token)"
 export DREMIOAI_DREMIO__PROJECT_ID='replace-for-dremio-cloud'
 ```
 
-Optional defaults:
+Optional MCP-server defaults:
 
 ```bash
 export DREMIOAI_TOOLS__SERVER_MODE=FOR_SELF,FOR_DATA_PATTERNS
@@ -39,7 +42,7 @@ codex plugin marketplace add dremio-professional-services/dremio-mcp-plugin --re
 codex plugin add dremio-mcp@dremio-mcp-plugin
 ```
 
-Start a new Codex session after installation so the skill and MCP server are loaded.
+Start a new Codex session after installation so the three skills and MCP server definition are loaded.
 
 For local development from this checkout:
 
@@ -66,7 +69,13 @@ docs/installation.md                  macOS and Windows install guide
 docs/config.md                        environment, .env, and config.yaml precedence
 docs/architecture.md                  local MCP runtime architecture
 plugins/dremio-mcp/.mcp.json          dremio-mcp MCP entry
-plugins/dremio-mcp/skills/dremio-mcp/ companion skill
+plugins/dremio-mcp/skills/dremio-mcp/ MCP configuration skill
+plugins/dremio-mcp/skills/dremio-cloud-sql/
+                                        Current non-Classic Dremio Cloud SQL skill; load only for scoped SQL
+                                        or metadata-query requests after platform confirmation
+plugins/dremio-mcp/skills/dremio-enterprise-sql/
+                                        Dremio Enterprise 26.x SQL skill; load only for scoped SQL or
+                                        metadata-query requests after edition and version confirmation
 ```
 
 ## Versioning

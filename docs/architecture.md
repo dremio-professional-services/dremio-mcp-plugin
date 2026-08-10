@@ -1,6 +1,6 @@
 # Architecture
 
-This repository is a small plugin marketplace. It does not contain the Dremio MCP server implementation. Instead, it publishes plugin metadata, a `.mcp.json` server definition, and a companion skill.
+This repository is a small plugin marketplace. It does not contain the Dremio MCP server implementation. Instead, it publishes plugin metadata, a `.mcp.json` server definition, an MCP configuration skill, and two independent platform SQL skills.
 
 ![Dremio MCP local session architecture](dremio-mcp-architecture.png)
 
@@ -30,6 +30,15 @@ The process is session-scoped:
 | Environment variables | Provide URI, PAT, project ID, and runtime defaults without storing secrets in this repository. |
 | Dremio MCP server | Exposes Dremio catalog, metadata, and SQL tools to the agent. |
 | Dremio Cloud or cluster | Serves the actual Dremio API and query workload. |
+| `dremio-mcp` skill | Guides local MCP configuration and safe use. |
+| `dremio-cloud-sql` skill | Provides current Dremio Cloud SQL guidance from its own public, topic-scoped references. |
+| `dremio-enterprise-sql` skill | Provides current Dremio Enterprise 26.x SQL guidance from its own public, topic-scoped references. |
+
+## SQL Skill Isolation
+
+The Cloud and Enterprise SQL skills are selected only for SQL syntax, SQL review, system-table SQL, or metadata-query work after the exact platform boundary is established. Broad mentions of engines, jobs, users, roles, or operations do not select them by themselves. The Cloud skill covers current non-Classic Dremio Cloud and excludes Dremio Cloud Classic. The Enterprise skill covers only Dremio Enterprise 26.x; `self-managed` alone does not establish the required edition and version. When the boundary is missing, the agent asks for clarification before loading detailed references.
+
+The SQL skills work offline after plugin installation and do not require a local MCP server, credentials, or a live Dremio connection. Each maintains separate public-documentation references and loads only the smallest relevant topic, so Cloud and Enterprise context is not mixed or loaded through a shared SQL core.
 
 ## Startup Flow
 
