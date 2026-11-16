@@ -46,9 +46,10 @@ The plugin sets no `DREMIOAI_*` values itself; it only sets `PYTHONWARNINGS=igno
 | `DREMIOAI_DREMIO__PROJECT_ID` | Dremio Cloud only | none | your project ID | Dremio Cloud project |
 | `DREMIOAI_TOOLS__SERVER_MODE` | No | `FOR_SELF` | `FOR_SELF,FOR_DATA_PATTERNS` | MCP tool sets the server exposes |
 | `DREMIOAI_DREMIO__ENABLE_SEARCH` | No | `false` | `true` | Enables catalog search tools |
+| `DREMIOAI_DREMIO__ENABLE_REMOTE_TOOLS` | No | `true` | `true` | Exposes Dremio's server-side AI tools when the Dremio backend offers them, independent of `SERVER_MODE`; set `false` to hide them |
 | `DREMIOAI_DREMIO__ALLOW_DML` | No | `false` | `false` unless writes are needed | `true` lets MCP tools create or change Dremio objects, such as views, within the user's permissions |
 
-Without the optional variables the server runs read-only with the basic tool set. Codex forwards only the six variables in this table; other `DREMIOAI_*` settings work in Claude Code, `.env`, or `config.yaml`, but not from the Codex environment.
+Without the optional variables the server runs read-only with the `FOR_SELF` tool set plus any server-side AI tools the Dremio backend offers. Codex forwards only the seven variables in this table; other `DREMIOAI_*` settings work in Claude Code, `.env`, or `config.yaml`, but not from the Codex environment.
 
 ## Precedence
 

@@ -50,7 +50,8 @@ both features require the corresponding Enterprise-edition entitlement; that
 licensing statement does not establish whether Dremio Cloud publishes comparable
 forms. Partition transforms apply only to Iceberg tables. `CLUSTER BY` likewise
 requires the Enterprise-edition entitlement and cannot be combined with
-`PARTITION BY` or `LOCALSORT BY`. CTAS is enabled per source and requires the
+`PARTITION BY` or `LOCALSORT BY`. `CLUSTER BY` and `LOCALSORT BY` do not
+support columns with complex types such as STRUCT, LIST, or MAP. CTAS is enabled per source and requires the
 relevant source privileges. `DROP TABLE` is documented only for tables created
 on a filesystem source and requires permission.
 Replacement and drop forms change or remove objects.

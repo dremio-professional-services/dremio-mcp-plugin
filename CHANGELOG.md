@@ -4,6 +4,22 @@ All notable changes to this project are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-11-16
+
+### Added
+
+- `DREMIOAI_DREMIO__ENABLE_REMOTE_TOOLS` in the forwarded MCP environment and the configuration docs. Upstream `dremio-mcp` now exposes Dremio's server-side AI tools by default, independent of `DREMIOAI_TOOLS__SERVER_MODE`.
+- Dremio Cloud SQL skill: recursive CTEs (`WITH RECURSIVE`), `GRANT`/`REVOKE ... ON ALL SPACES` and `ON ALL FOLDERS IN SPACE`, and `SHOW TBLPROPERTIES` with `table_property_source`.
+
+### Changed
+
+- Dremio Cloud SQL skill: `INSERT ... SELECT` maps columns by position; `CORR` no longer needs quoting; `CEILING`/`FLOOR` return `DECIMAL(p - s + 1, 0)` for decimal input; `CLUSTER BY` and `LOCALSORT BY` reject complex-type columns; the edition note for clustering and policies reflects the current, inconsistent public pages.
+- Dremio Enterprise SQL skill: `CLUSTER BY` and `LOCALSORT BY` reject complex-type columns; `OPTIMIZE TABLE` on Open Catalog tables requires `SELECT` and `WRITE`.
+
+### Removed
+
+- Dremio Cloud SQL skill: the `E()` function, which is no longer documented.
+
 ## [0.4.0] - 2026-11-16
 
 ### Changed

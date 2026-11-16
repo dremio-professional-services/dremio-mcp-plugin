@@ -5,6 +5,7 @@ Sources: [COPY INTO](https://docs.dremio.com/dremio-cloud/sql/commands/copy-into
 [OPTIMIZE TABLE](https://docs.dremio.com/dremio-cloud/sql/commands/optimize-table/),
 [ROLLBACK TABLE](https://docs.dremio.com/dremio-cloud/sql/commands/rollback-table/),
 [VACUUM TABLE](https://docs.dremio.com/dremio-cloud/sql/commands/vacuum-table/),
+[SHOW TBLPROPERTIES](https://docs.dremio.com/dremio-cloud/sql/commands/show-table-properties/),
 and [SELECT](https://docs.dremio.com/dremio-cloud/sql/commands/SELECT/).
 
 ## Preconditions
@@ -53,6 +54,15 @@ OPTIMIZE TABLE <table_name> [ FOR PARTITIONS <predicate> ];
 rewrites data and manifest files; the optional partition form is documented as
 available but planned for deprecation. Do not assume an optimization finishes in
 one pass for clustered data.
+
+```sql
+SHOW TBLPROPERTIES <table_name>;
+```
+
+`SHOW TBLPROPERTIES` returns `table_property_name`, `table_property_value`,
+and `table_property_source` for an Iceberg table. The source is `TABLE` for a
+value set on the table or `SYSTEM` for a system-option value; `SYSTEM` rows
+appear only when that value differs from the Iceberg default.
 
 ## Snapshot recovery and cleanup
 

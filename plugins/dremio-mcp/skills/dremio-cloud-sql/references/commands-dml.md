@@ -15,7 +15,10 @@ INSERT INTO <table_name> [ (<column_name> [, ...]) ]
 
 With an explicit column list, supplied values map in that order. Without one,
 the values must match the target table definition. A query form inserts the
-result set into the target.
+result set into the target. Columns map by position, not by name: order the
+`SELECT` list like the target columns. Earlier releases could fall back to
+name-based matching, so review older `INSERT ... SELECT` statements whose
+column order differs from the target.
 
 ```sql
 INSERT INTO lakehouse.orders (order_id, amount)

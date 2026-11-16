@@ -26,7 +26,8 @@ VACUUM TABLE <table_name>
 
 `OPTIMIZE TABLE` rewrites data and manifest files of an Apache Iceberg table.
 It requires membership in `ADMIN`, table ownership, or both `SELECT` and
-`UPDATE` privileges on the table. Omitted clauses use `REWRITE DATA`; `USING
+`UPDATE` privileges on the table; for a table in an Open Catalog, the
+privileges are `SELECT` and `WRITE`. Omitted clauses use `REWRITE DATA`; `USING
 BIN_PACK` is optional because it is the only documented strategy. The data
 rewrite options apply to partitioned tables; `FOR PARTITIONS` applies only to
 `REWRITE DATA`. `REWRITE MANIFESTS` cannot be combined with `REWRITE DATA`.

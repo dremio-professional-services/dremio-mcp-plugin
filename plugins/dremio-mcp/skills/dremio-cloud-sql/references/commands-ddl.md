@@ -26,10 +26,14 @@ table has catalog- and source-dependent effects, so confirm the source page
 before using it operationally.
 
 The Cloud pages publish `CLUSTER BY`, masking-policy, and row-access-policy
-forms, but mark all of them as available only with an Enterprise-edition
-entitlement. This includes `CREATE TABLE ... CLUSTER BY`, `MASKING POLICY`,
-and `ROW ACCESS POLICY`, plus the corresponding `ALTER TABLE` clustering and
-policy forms; do not present them as universally available in Cloud.
+forms. The `CREATE TABLE` page still marks `CLUSTER BY`, `MASKING POLICY`, and
+`ROW ACCESS POLICY` as available only with an Enterprise-edition entitlement;
+the `ALTER TABLE` page no longer carries that note for the corresponding
+clustering and policy forms. Because the pages disagree, state the edition
+requirement as unconfirmed instead of presenting the forms as universally
+available. `CLUSTER BY` cannot be combined with `PARTITION BY` or `LOCALSORT`.
+`CLUSTER BY` and `LOCALSORT BY` do not support columns with complex types such
+as STRUCT, LIST, or MAP.
 
 ```sql
 CREATE TABLE lakehouse.orders (

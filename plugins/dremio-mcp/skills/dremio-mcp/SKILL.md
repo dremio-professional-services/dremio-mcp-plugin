@@ -24,6 +24,7 @@ The plugin sets only `PYTHONWARNINGS=ignore` and no `DREMIOAI_*` defaults. Upstr
 ```text
 DREMIOAI_TOOLS__SERVER_MODE=FOR_SELF        recommended: FOR_SELF,FOR_DATA_PATTERNS
 DREMIOAI_DREMIO__ENABLE_SEARCH=false        recommended: true
+DREMIOAI_DREMIO__ENABLE_REMOTE_TOOLS=true   server-side AI tools, if the Dremio backend offers them
 DREMIOAI_DREMIO__ALLOW_DML=false            read-only unless the user sets true
 ```
 

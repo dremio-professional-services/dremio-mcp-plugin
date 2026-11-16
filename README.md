@@ -25,7 +25,7 @@ export DREMIOAI_DREMIO__PAT=@~/.dremio/token
 export DREMIOAI_DREMIO__PROJECT_ID="<project-id>"
 ```
 
-Codex and Claude Code do not read `.env` files, and the plugin sets no `DREMIOAI_*` defaults. The server runs read-only with the basic tool set unless you enable search, data-pattern tools, or DML. See [docs/config.md](docs/config.md) for all variables, `.env` usage, and precedence.
+Codex and Claude Code do not read `.env` files, and the plugin sets no `DREMIOAI_*` defaults. The server runs read-only with the `FOR_SELF` tool set, plus any server-side AI tools your Dremio offers, unless you enable search, data-pattern tools, or DML. See [docs/config.md](docs/config.md) for all variables, `.env` usage, and precedence.
 
 ### Codex
 

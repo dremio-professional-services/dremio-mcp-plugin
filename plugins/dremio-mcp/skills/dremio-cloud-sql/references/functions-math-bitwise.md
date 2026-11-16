@@ -11,15 +11,14 @@ Cloud SQL functions in the Math and Bitwise categories. Aggregate standard-devia
 | ATAN2 | `ATAN2(y NUMERIC, x NUMERIC) -> DOUBLE`; two-coordinate inverse tangent. | Both operands are numeric coordinates. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/ATAN2/) |
 | BROUND | `BROUND(numeric_expression DOUBLE) -> FLOAT8`; banker's rounding. | Input is numeric. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/BROUND/) |
 | CBRT | `CBRT(numeric_expression NUMERIC) -> FLOAT`; cube root. | Input can be double, float, or integer. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/CBRT/) |
-| CEILING | `CEILING(numeric_expression NUMERIC) -> INTEGER`; rounds up. | Input can be double, float, or integer. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/CEILING/) |
+| CEILING | `CEILING(numeric_expression NUMERIC) -> INTEGER`; rounds up. | Input can be double, float, or integer. For a `DECIMAL(p, s)` input, the [changelog](https://docs.dremio.com/dremio-cloud/changelog/) documents a `DECIMAL(p - s + 1, 0)` result. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/CEILING/) |
 | COS | `COS(numeric_expression NUMERIC) -> FLOAT`; cosine. | Input is radians. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/COS/) |
 | COSH | `COSH(numeric_expression NUMERIC) -> FLOAT`; hyperbolic cosine. | Input is radians. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/COSH/) |
 | COT | `COT(numeric_expression NUMERIC) -> FLOAT`; cotangent. | Input is radians. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/COT/) |
 | DEGREES | `DEGREES(numeric_expression NUMERIC) -> FLOAT`; radians to degrees. | Input may be double, integer, or float. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/DEGREES/) |
-| E | `E() -> FLOAT`; Euler's number. | No arguments. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/E/) |
 | EXP | `EXP(numeric_expression NUMERIC) -> FLOAT`; e raised to input. | Input may be double, integer, or float. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/EXP/) |
 | FACTORIAL | `FACTORIAL(expression INTEGER) -> BIGINT`; factorial. | Input must be an integer from 0 through 20. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/FACTORIAL/) |
-| FLOOR | `FLOOR(numeric_expression NUMERIC) -> INTEGER`; rounds down. | Input can be double, float, or integer. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/FLOOR/) |
+| FLOOR | `FLOOR(numeric_expression NUMERIC) -> INTEGER`; rounds down. | Input can be double, float, or integer. For a `DECIMAL(p, s)` input, the [changelog](https://docs.dremio.com/dremio-cloud/changelog/) documents a `DECIMAL(p - s + 1, 0)` result. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/FLOOR/) |
 | LN | `LN(numeric_expression DOUBLE) -> FLOAT8`; natural logarithm. | Input must be greater than zero. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/LN/) |
 | LOG | `LOG([base_expression FLOAT], expression FLOAT) -> DOUBLE`; logarithm. | Base is optional. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/LOG/) |
 | LOG10 | `LOG10(expression DOUBLE) -> DOUBLE`; base-10 logarithm. | Input is double. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/LOG10/) |

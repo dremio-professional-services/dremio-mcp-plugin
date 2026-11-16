@@ -15,7 +15,7 @@ Cloud SQL functions in the Aggregate, Window, and Percentile categories. A funct
 | AVG | `AVG(numeric_expression NUMERIC) -> DOUBLE`; average. | Accepts double, numeric, integer, `INTERVAL_DATE`, or `INTERVAL_YEAR`. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/AVG/) |
 | BIT_AND | `BIT_AND(expression INT) -> INT`; aggregate bitwise AND. | Input must be castable to integer. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/BIT_AND/) |
 | BIT_OR | `BIT_OR(expression INT) -> INT`; aggregate bitwise OR. | Input must be castable to integer. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/BIT_OR/) |
-| CORR | `CORR(expression1 NUMERIC, expression2 NUMERIC) -> DOUBLE`; Pearson correlation. | The function name must be double-quoted. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/CORR/) |
+| CORR | `CORR(expression1 NUMERIC, expression2 NUMERIC) -> DOUBLE`; Pearson correlation. | Unquoted `CORR(...)` is documented. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/CORR/) |
 | COUNT | `COUNT(expression ANY) -> BIGINT`; record count. | `*` includes rows with `NULL`; a column expression excludes them. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/COUNT/) |
 | COVAR_POP | `COVAR_POP(expression1 NUMERIC, expression2 NUMERIC) -> DOUBLE`; population covariance. | Both expressions are numeric. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/COVAR_POP/) |
 | COVAR_SAMP | `COVAR_SAMP(expression1 NUMERIC, expression2 NUMERIC) -> DOUBLE`; sample covariance. | Both expressions are numeric. | [docs](https://docs.dremio.com/dremio-cloud/sql/sql-functions/functions/COVAR_SAMP/) |

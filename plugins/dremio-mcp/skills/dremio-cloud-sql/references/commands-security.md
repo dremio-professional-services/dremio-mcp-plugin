@@ -38,7 +38,15 @@ FROM ROLE <role_name>;
 ```
 
 Use `TO USER` or `FROM USER` for direct user grants. The command pages also
-document `ON ALL FOLDERS IN CATALOG` and `ON ALL DATASETS IN CATALOG` forms.
+document `ON ALL FOLDERS IN CATALOG` and `ON ALL DATASETS IN CATALOG` forms,
+plus `ON ALL SPACES` and `ON ALL FOLDERS IN SPACE <space_name>`; `SPACE` is a
+grantable object type.
+
+```sql
+GRANT SELECT ON ALL SPACES TO ROLE analyst;
+GRANT SELECT ON ALL FOLDERS IN SPACE sales_data TO ROLE analyst;
+REVOKE SELECT ON ALL FOLDERS IN SPACE sales_data FROM USER user1;
+```
 For `ORG` and `PROJECT`, omit the object name because it is inferred.
 
 ```sql

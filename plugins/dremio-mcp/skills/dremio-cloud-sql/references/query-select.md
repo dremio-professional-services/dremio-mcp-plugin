@@ -43,6 +43,24 @@ ORDER BY total_amount DESC
 LIMIT 10;
 ```
 
+A recursive CTE ([WITH](https://docs.dremio.com/dremio-cloud/sql/commands/with/))
+queries hierarchical or graph-structured data. It combines an anchor `SELECT`
+that runs once and a recursive `SELECT` that references the CTE, joined by
+`UNION ALL`. The anchor cannot reference the CTE; iteration stops when the
+recursive term returns no rows.
+
+```sql
+WITH RECURSIVE org(empno, ename, level) AS (
+  SELECT empno, ename, 0
+  FROM emp WHERE mgr IS NULL
+  UNION ALL
+  SELECT e.empno, e.ename, o.level + 1
+  FROM emp e JOIN org o ON e.mgr = o.empno
+)
+SELECT level, ename
+FROM org ORDER BY level, ename;
+```
+
 ## Windows and QUALIFY
 
 Window functions use `OVER (...)`, optionally with `PARTITION BY`, `ORDER BY`,
