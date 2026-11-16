@@ -4,6 +4,25 @@ All notable changes to this project are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-11-16
+
+### Changed
+
+- **Breaking:** Removed the `DREMIOAI_TOOLS__SERVER_MODE`, `DREMIOAI_DREMIO__ENABLE_SEARCH`, and `DREMIOAI_DREMIO__ALLOW_DML` defaults from `.mcp.json`. Plugin-set values overrode the user's environment and `.env`, so read-only mode could not be enabled. Upstream defaults now apply (`FOR_SELF`, search off, DML off) unless the user sets the variables.
+- Rewrote `docs/config.md` as the single configuration reference: how variables reach the server, that Codex and Claude Code do not read `.env`, a variable table with upstream and recommended values, precedence, `.env` loading recipes, and troubleshooting.
+- Replaced the Draw.io architecture diagram with Mermaid diagrams in `docs/architecture.md` and `docs/config.md`.
+- Aligned `SECURITY.md` with the Dremio responsible disclosure process: private reports to security@dremio.com, expected report contents, and an extended secret-handling list.
+- Restored the unmodified Apache License 2.0 text in `LICENSE`.
+- Updated `AGENTS.md` to point to `CONTRIBUTING.md` and `SECURITY.md` instead of duplicating their content.
+
+### Added
+
+- `.env` templates for Dremio Cloud (`examples/dremio-cloud.env`) and self-managed Dremio Software (`examples/dremio-software.env`).
+
+### Removed
+
+- `docs/dremio-mcp-architecture.drawio` and `docs/dremio-mcp-architecture.png`.
+
 ## [0.3.0] - 2026-08-10
 
 ### Added

@@ -14,18 +14,17 @@ Use the `dremio-mcp` MCP server from this plugin when an agent needs live Dremio
    - `DREMIOAI_DREMIO__URI`: `prod`, `prodemea`, or a full Dremio coordinator/API URL.
    - `DREMIOAI_DREMIO__PAT`: personal access token or compatible secret.
    - `DREMIOAI_DREMIO__PROJECT_ID`: required for Dremio Cloud projects.
-3. If read-only access is required, set `DREMIOAI_DREMIO__ALLOW_DML=false` before starting the agent.
+3. Codex and Claude Code do not read `.env` files. Variables must be in the environment that started the agent; a `.env` file works only after `set -a; source .env; set +a` in that shell. Changes need a new agent session.
 4. On Windows, restart Codex or Claude Code after changing user-level environment variables so the process inherits them.
 
 ## Defaults
 
-The MCP config sets these cross-platform defaults:
+The plugin sets only `PYTHONWARNINGS=ignore` and no `DREMIOAI_*` defaults. Upstream defaults apply unless the user sets them:
 
 ```text
-DREMIOAI_TOOLS__SERVER_MODE=FOR_SELF,FOR_DATA_PATTERNS
-DREMIOAI_DREMIO__ENABLE_SEARCH=true
-DREMIOAI_DREMIO__ALLOW_DML=true
-PYTHONWARNINGS=ignore
+DREMIOAI_TOOLS__SERVER_MODE=FOR_SELF        recommended: FOR_SELF,FOR_DATA_PATTERNS
+DREMIOAI_DREMIO__ENABLE_SEARCH=false        recommended: true
+DREMIOAI_DREMIO__ALLOW_DML=false            read-only unless the user sets true
 ```
 
 Treat `ALLOW_DML=true` as write-capable. It can allow the MCP server to create Dremio views when supported by upstream tools and user permissions.
@@ -35,4 +34,4 @@ Treat `ALLOW_DML=true` as write-capable. It can allow the MCP server to create D
 - Never commit PATs, project-specific endpoints, or generated Dremio config files.
 - Prefer environment variables supplied by the user/session over editing plugin files.
 - Before using write-capable tools, state that `ALLOW_DML=true` is active and ask for confirmation when the action may create or modify Dremio objects.
-- If the MCP server fails to start or connects to an unexpected target, first check missing env vars, `uvx`, Python version, the Dremio URI, a project-local `.env`, and `~/.config/dremioai/config.yaml`.
+- If the MCP server fails to start or connects to an unexpected target, first check missing env vars, `uvx`, Python version, the Dremio URI, a `.env` in the server's working directory, and `~/.config/dremioai/config.yaml`; those fallbacks fill only settings missing from the environment.

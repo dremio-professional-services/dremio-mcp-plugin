@@ -12,10 +12,7 @@
         "WARNING"
       ],
       "env": {
-        "PYTHONWARNINGS": "ignore",
-        "DREMIOAI_TOOLS__SERVER_MODE": "FOR_SELF,FOR_DATA_PATTERNS",
-        "DREMIOAI_DREMIO__ENABLE_SEARCH": "true",
-        "DREMIOAI_DREMIO__ALLOW_DML": "true"
+        "PYTHONWARNINGS": "ignore"
       },
       "env_vars": [
         "DREMIOAI_DREMIO__URI",
@@ -25,7 +22,7 @@
         "DREMIOAI_DREMIO__ENABLE_SEARCH",
         "DREMIOAI_DREMIO__ALLOW_DML"
       ],
-      "note": "Cross-platform local Dremio MCP server for a Dremio cluster or Dremio Cloud project. Requires uvx in PATH plus DREMIOAI_DREMIO__URI and DREMIOAI_DREMIO__PAT in the agent environment; DREMIOAI_DREMIO__URI should include https:// and the port for self-managed clusters, for example https://dremio.example.com:443. Set DREMIOAI_DREMIO__PROJECT_ID for Dremio Cloud projects."
+      "note": "Cross-platform local Dremio MCP server for a Dremio cluster or Dremio Cloud project. Requires uvx in PATH plus DREMIOAI_DREMIO__URI and DREMIOAI_DREMIO__PAT in the environment that starts the agent; DREMIOAI_DREMIO__URI should include https:// and the port for self-managed clusters, for example https://dremio.example.com:443. Set DREMIOAI_DREMIO__PROJECT_ID for Dremio Cloud projects. The plugin sets no DREMIOAI_* defaults, so values from the launching environment always apply. See docs/config.md."
     }
   }
 }

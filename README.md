@@ -17,23 +17,15 @@ Plugin installation and runtime prerequisites:
 
 The installed plugin registers the MCP server and starts it through `uvx` for each Codex or Claude Code session, so `uvx` and Python are runtime prerequisites. The two SQL reference skills' bundled content and answers remain offline: they do not depend on MCP connectivity, a PAT, an endpoint, environment configuration, or a live Dremio connection.
 
-To use the local MCP server against Dremio, provide a Dremio PAT and endpoint. Dremio documents MCP setup and endpoint choices in the [Dremio MCP guide](https://docs.dremio.com/dremio-cloud/ai-integration/mcp-server/). Set the connection values in the environment that launches your agent:
+To use the local MCP server against Dremio, provide a Dremio PAT and endpoint. Dremio documents MCP setup and endpoint choices in the [Dremio MCP guide](https://docs.dremio.com/dremio-cloud/ai-integration/mcp-server/). Set the connection values in the environment that starts your agent:
 
 ```bash
 export DREMIOAI_DREMIO__URI=prodemea
-export DREMIOAI_DREMIO__PAT="$(cat ~/.dremio/token)"
-export DREMIOAI_DREMIO__PROJECT_ID='replace-for-dremio-cloud'
+export DREMIOAI_DREMIO__PAT=@~/.dremio/token
+export DREMIOAI_DREMIO__PROJECT_ID="<project-id>"
 ```
 
-Optional MCP-server defaults:
-
-```bash
-export DREMIOAI_TOOLS__SERVER_MODE=FOR_SELF,FOR_DATA_PATTERNS
-export DREMIOAI_DREMIO__ENABLE_SEARCH=true
-export DREMIOAI_DREMIO__ALLOW_DML=true
-```
-
-Set `DREMIOAI_DREMIO__ALLOW_DML=false` for read-only use. The inherited default is `true`, which can allow upstream MCP tools to create Dremio views when the authenticated user has permission.
+Codex and Claude Code do not read `.env` files, and the plugin sets no `DREMIOAI_*` defaults. The server runs read-only with the basic tool set unless you enable search, data-pattern tools, or DML. See [docs/config.md](docs/config.md) for all variables, `.env` usage, and precedence.
 
 ### Codex
 
@@ -66,8 +58,10 @@ Then run `/reload-plugins` inside Claude Code or start a fresh session. Claude C
 .agents/plugins/marketplace.json      Codex marketplace index
 .claude-plugin/marketplace.json       Claude Code marketplace index
 docs/installation.md                  macOS and Windows install guide
-docs/config.md                        environment, .env, and config.yaml precedence
+docs/config.md                        connection variables, .env usage, and precedence
 docs/architecture.md                  local MCP runtime architecture
+examples/dremio-cloud.env             .env template for a Dremio Cloud project
+examples/dremio-software.env          .env template for self-managed Dremio Software
 plugins/dremio-mcp/.mcp.json          dremio-mcp MCP entry
 plugins/dremio-mcp/skills/dremio-mcp/ MCP configuration skill
 plugins/dremio-mcp/skills/dremio-cloud-sql/

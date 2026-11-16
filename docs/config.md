@@ -1,113 +1,148 @@
 # Configuration
 
-This plugin does not store Dremio endpoints, PATs, project IDs, or generated Dremio config files. It starts the upstream `dremio/dremio-mcp` server locally and passes configuration through the MCP server process environment.
+This page is the single reference for how Dremio connection settings reach the `dremio-mcp` server. The plugin stores no Dremio endpoints, PATs, project IDs, or generated config files.
 
-## Plugin Defaults
+## Short Version
 
-The plugin defines these default process environment values in `plugins/dremio-mcp/.mcp.json`:
+Set `DREMIOAI_*` variables in the environment that starts Codex or Claude Code, then start a new agent session. Nothing else is required.
 
-```text
-DREMIOAI_TOOLS__SERVER_MODE=FOR_SELF,FOR_DATA_PATTERNS
-DREMIOAI_DREMIO__ENABLE_SEARCH=true
-DREMIOAI_DREMIO__ALLOW_DML=true
-PYTHONWARNINGS=ignore
+```bash
+export DREMIOAI_DREMIO__URI=prodemea
+export DREMIOAI_DREMIO__PAT=@~/.dremio/token
+export DREMIOAI_DREMIO__PROJECT_ID="<project-id>"
 ```
 
-Set `DREMIOAI_DREMIO__ALLOW_DML=false` in the environment that launches Codex or Claude Code when you want read-only use.
+Codex and Claude Code do not read `.env` files. A `.env` file only takes effect if you load it into your shell before starting the agent (see [Using a `.env` File](#using-a-env-file)).
 
-Connection-specific values must come from the user environment or another upstream Dremio MCP config source:
+## How Settings Reach The Server
 
-```text
-DREMIOAI_DREMIO__URI
-DREMIOAI_DREMIO__PAT
-DREMIOAI_DREMIO__PROJECT_ID
+```mermaid
+flowchart LR
+    shell["Shell or OS environment<br/>DREMIOAI_* variables"]
+    agent["Codex or Claude Code<br/>(does not read .env)"]
+    server["dremio-mcp server<br/>(started through uvx)"]
+    dotenv[".env in the server's<br/>working directory"]
+    yaml["~/.config/dremioai/config.yaml"]
+
+    shell -->|"inherited when the agent starts"| agent
+    agent -->|"passes DREMIOAI_* variables"| server
+    dotenv -.->|"fallback, read by the server"| server
+    yaml -.->|"fallback, read by the server"| server
 ```
 
-`DREMIOAI_DREMIO__PROJECT_ID` is required for Dremio Cloud projects. For self-managed Dremio, use a full HTTPS URL such as `https://dremio.example.com:443`.
+1. **Your shell or OS environment.** You set `DREMIOAI_*` variables in the shell profile, the current terminal, or Windows user environment variables.
+2. **The agent process.** Codex or Claude Code inherits that environment when it starts. Neither client reads `.env` files. A running session does not see later changes; start a new session.
+3. **The MCP server process.** The agent starts `dremio-mcp` and passes the variables on. Claude Code passes its whole environment. Codex passes only a small set of system variables plus the names listed in `env_vars` in `plugins/dremio-mcp/.mcp.json`.
+4. **Fallbacks inside the server.** The upstream server reads a `.env` file from its own working directory and the default `config.yaml` for any setting that is not already in its environment.
 
-## Upstream Resolution Order
+The plugin sets no `DREMIOAI_*` values itself; it only sets `PYTHONWARNINGS=ignore`. Your values therefore always apply.
 
-After the local process starts, the upstream Dremio MCP server resolves settings in this order:
+## Variables
 
-1. Programmatic or CLI initialization values.
-2. Real process environment variables such as `DREMIOAI_DREMIO__URI`.
-3. A `.env` file in the process current working directory, if present.
-4. The default YAML config file.
-5. File secrets supported by Pydantic settings.
+| Variable | Required | Upstream default | Recommended value | Meaning |
+|---|---|---|---|---|
+| `DREMIOAI_DREMIO__URI` | Yes | none | `prod`, `prodemea`, or `https://dremio.example.com:443` | Dremio Cloud region shortcut (`prod` = US, `prodemea` = EU) or full self-managed URL with `https://` and port |
+| `DREMIOAI_DREMIO__PAT` | Yes | none | `@<path-to-token-file>` | Personal access token, or `@` followed by a path to a file that contains it |
+| `DREMIOAI_DREMIO__PROJECT_ID` | Dremio Cloud only | none | your project ID | Dremio Cloud project |
+| `DREMIOAI_TOOLS__SERVER_MODE` | No | `FOR_SELF` | `FOR_SELF,FOR_DATA_PATTERNS` | MCP tool sets the server exposes |
+| `DREMIOAI_DREMIO__ENABLE_SEARCH` | No | `false` | `true` | Enables catalog search tools |
+| `DREMIOAI_DREMIO__ALLOW_DML` | No | `false` | `false` unless writes are needed | `true` lets MCP tools create or change Dremio objects, such as views, within the user's permissions |
 
-For normal plugin use, the important order is:
+Without the optional variables the server runs read-only with the basic tool set. Codex forwards only the six variables in this table; other `DREMIOAI_*` settings work in Claude Code, `.env`, or `config.yaml`, but not from the Codex environment.
 
-```text
-process environment > .env in current working directory > default config.yaml
+## Precedence
+
+When the same setting is defined in several places, the upstream server uses the first match:
+
+| Order | Source | Notes |
+|---|---|---|
+| 1 | Process environment | What the agent passed on. Recommended. |
+| 2 | `.env` in the server's working directory | Optional fallback; depends on where the client starts the server. |
+| 3 | `$XDG_CONFIG_HOME/dremioai/config.yaml` | Default `~/.config/dremioai/config.yaml`, also on Windows (`C:\Users\<user>\.config\dremioai\config.yaml`). |
+
+Example: `DREMIOAI_DREMIO__URI=prod` in your shell and `uri: prodemea` in `config.yaml` connect to `prod`. If the shell variable is missing, the server silently uses `prodemea` from the YAML file.
+
+The upstream server may create an empty `config.yaml` at the default path on first start.
+
+## Recipes
+
+### Shell Profile (Recommended)
+
+macOS or Linux, in `~/.zshrc` or `~/.bashrc`:
+
+```bash
+export DREMIOAI_DREMIO__URI=prodemea
+export DREMIOAI_DREMIO__PAT=@~/.dremio/token
+export DREMIOAI_DREMIO__PROJECT_ID="<project-id>"
+export DREMIOAI_TOOLS__SERVER_MODE=FOR_SELF,FOR_DATA_PATTERNS
+export DREMIOAI_DREMIO__ENABLE_SEARCH=true
 ```
 
-That means explicit environment variables are the safest way to make the plugin deterministic.
+Open a new terminal, then start Codex or Claude Code from it.
 
-## Default Config File
+Windows, as user environment variables:
 
-The upstream server uses this default config path:
-
-```text
-$XDG_CONFIG_HOME/dremioai/config.yaml
+```powershell
+[Environment]::SetEnvironmentVariable("DREMIOAI_DREMIO__URI", "prodemea", "User")
+[Environment]::SetEnvironmentVariable("DREMIOAI_DREMIO__PAT", "@C:\Users\<user>\.dremio\token", "User")
+[Environment]::SetEnvironmentVariable("DREMIOAI_DREMIO__PROJECT_ID", "<project-id>", "User")
+[Environment]::SetEnvironmentVariable("DREMIOAI_TOOLS__SERVER_MODE", "FOR_SELF,FOR_DATA_PATTERNS", "User")
+[Environment]::SetEnvironmentVariable("DREMIOAI_DREMIO__ENABLE_SEARCH", "true", "User")
 ```
 
-If `XDG_CONFIG_HOME` is not set, it falls back to:
+Open a new terminal, then start the agent. Windows processes do not see user-level changes until they restart.
 
-```text
-~/.config/dremioai/config.yaml
+Desktop apps started from the Dock, Start menu, or Finder may not load your shell profile. Start them from a configured terminal, or set the variables at OS level.
+
+### Using a `.env` File
+
+To keep per-project settings in a `.env` file, load it into the shell before starting the agent. This makes the values real environment variables, so they work the same way in Codex and Claude Code.
+
+Start from one of the templates and fill in the placeholders:
+
+| Template | Target |
+|---|---|
+| [`examples/dremio-cloud.env`](../examples/dremio-cloud.env) | Dremio Cloud project (`prod` or `prodemea`, project ID) |
+| [`examples/dremio-software.env`](../examples/dremio-software.env) | Self-managed Dremio Software (coordinator URL) |
+
+```bash
+cp examples/dremio-cloud.env .env
 ```
 
-This path is used on macOS, Linux, and Windows. On Windows with no `XDG_CONFIG_HOME`, that typically means:
+Keep one setting per line with no quotes and no comments after a value, so the file loads the same way in bash and PowerShell.
 
-```text
-C:\Users\<user>\.config\dremioai\config.yaml
+macOS or Linux:
+
+```bash
+set -a
+source .env
+set +a
+codex   # or: claude
 ```
 
-If the file already exists, the upstream server reads it. If `DREMIOAI_DREMIO__URI`, `DREMIOAI_DREMIO__PAT`, or `DREMIOAI_DREMIO__PROJECT_ID` are not set in the process environment or `.env`, values from this YAML file can be used silently.
+Windows PowerShell:
 
-If the file does not exist, the upstream server may create an empty config file at that path during startup.
-
-Example YAML:
-
-```yaml
-dremio:
-  uri: "prodemea"
-  pat: "@~/tokens/dremio.pat"
-  project_id: "00000000-0000-0000-0000-000000000000"
-  enable_search: true
-  allow_dml: false
-tools:
-  server_mode: "FOR_SELF,FOR_DATA_PATTERNS"
+```powershell
+Get-Content .env | Where-Object { $_ -match '^\s*[^#].*=' } | ForEach-Object {
+  $name, $value = $_ -split '=', 2
+  Set-Item "Env:$($name.Trim())" $value.Trim()
+}
+codex   # or: claude
 ```
 
-The `@` prefix for `pat` tells the upstream server to read the PAT from a local file.
+Do not commit `.env` files. This repository ignores them in `.gitignore`.
 
-## `.env` Files
+### Several Dremio Targets
 
-The upstream server also reads `.env` from the current working directory of the Codex or Claude Code process. This matters because the plugin no longer changes into `/tmp` before running `uvx`.
+Each agent session starts its own server process with the environment of that session. Use separate terminals or separate `.env` files to point sessions at different Dremio Cloud projects or clusters; see [architecture.md](architecture.md).
 
-That is intentional for cross-platform support, but it means a project-local `.env` can affect the MCP server.
+### Read-Only Or Write Access
 
-Example `.env`:
+Read-only is the default. To let MCP tools create or change Dremio objects, set `DREMIOAI_DREMIO__ALLOW_DML=true` before starting the agent. Writes are still limited by the Dremio permissions of the PAT owner.
 
-```text
-DREMIOAI_DREMIO__URI=prodemea
-DREMIOAI_DREMIO__PAT=@~/tokens/dremio.pat
-DREMIOAI_DREMIO__PROJECT_ID=00000000-0000-0000-0000-000000000000
-DREMIOAI_DREMIO__ALLOW_DML=false
-```
+## Checks
 
-Do not commit `.env` files that contain PATs or customer-specific endpoints.
-
-## Recommended Practice
-
-- Set `DREMIOAI_DREMIO__URI`, `DREMIOAI_DREMIO__PAT`, and `DREMIOAI_DREMIO__PROJECT_ID` in the environment that launches Codex or Claude Code.
-- Use `DREMIOAI_DREMIO__ALLOW_DML=false` unless write-capable Dremio MCP tools are expected.
-- Keep PATs in a secret manager or token file, and pass them with the upstream `@file` syntax when useful.
-- Check for a project-local `.env` when the MCP server connects to an unexpected Dremio target.
-- Check `~/.config/dremioai/config.yaml` when environment variables are missing or behavior differs across machines.
-
-## Quick Checks
+Show which values are present without printing the PAT.
 
 macOS or Linux:
 
@@ -125,11 +160,21 @@ Get-ChildItem Env:DREMIOAI_* | ForEach-Object {
 }
 Test-Path .env
 $cfg = Join-Path $HOME ".config\dremioai\config.yaml"
-Test-Path $cfg
 if (Test-Path $cfg) { Get-Content $cfg | ForEach-Object { $_ -replace '(^\s*pat:\s*).*', '$1"<redacted>"' } }
 ```
 
-Avoid pasting PAT values into issues, logs, or pull requests.
+## Troubleshooting
+
+| Symptom | Check |
+|---|---|
+| Server reports missing URI or PAT | The variables were not set in the terminal that started the agent, or the session started before you set them. Start a new session. |
+| Values from `.env` are ignored | The agent does not read `.env`. Load it with `set -a; source .env; set +a` before starting the agent. |
+| Server connects to an unexpected Dremio target | A `.env` in the working directory or `~/.config/dremioai/config.yaml` fills a missing variable. Set the variable explicitly or remove the stale file. |
+| Dremio Cloud project not found | Set `DREMIOAI_DREMIO__PROJECT_ID`. |
+| Search or data-pattern tools missing | Set `DREMIOAI_DREMIO__ENABLE_SEARCH=true` and `DREMIOAI_TOOLS__SERVER_MODE=FOR_SELF,FOR_DATA_PATTERNS`. |
+| Write tools refuse to run | `DREMIOAI_DREMIO__ALLOW_DML` is `false` (default). |
+
+Never paste PAT values into issues, logs, or pull requests.
 
 ## Upstream References
 

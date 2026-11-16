@@ -11,7 +11,7 @@
       "name": "dremio-mcp",
       "source": "./plugins/dremio-mcp",
       "description": "Local Dremio MCP configuration plus independent Dremio Cloud and Enterprise SQL skills",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "keywords": [
         "dremio",
         "mcp",

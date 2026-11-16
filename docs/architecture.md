@@ -2,9 +2,34 @@
 
 This repository is a small plugin marketplace. It does not contain the Dremio MCP server implementation. Instead, it publishes plugin metadata, a `.mcp.json` server definition, an MCP configuration skill, and two independent platform SQL skills.
 
-![Dremio MCP local session architecture](dremio-mcp-architecture.png)
+```mermaid
+flowchart LR
+    repo["dremio-mcp-plugin repo<br/>marketplace + plugin metadata<br/>.mcp.json + 3 bundled skills"]
 
-Editable diagram: [dremio-mcp-architecture.drawio](dremio-mcp-architecture.drawio)
+    subgraph A["Session A"]
+        envA["Environment A<br/>URI=prodemea<br/>PROJECT_ID=cloud-project-a<br/>PAT from user environment"]
+        agentA["Codex or Claude Code"]
+        mcpA["Local process A<br/>uvx dremio-mcp-server run<br/>MCP stdio"]
+        envA --> agentA -->|starts| mcpA
+    end
+
+    subgraph B["Session B"]
+        envB["Environment B<br/>URI=https://dremio-b:443<br/>PROJECT_ID not needed<br/>PAT from user environment"]
+        agentB["Codex or Claude Code"]
+        mcpB["Local process B<br/>uvx dremio-mcp-server run<br/>MCP stdio"]
+        envB --> agentB -->|starts| mcpB
+    end
+
+    dremioA["Remote Dremio A<br/>Dremio Cloud project"]
+    dremioB["Remote Dremio B<br/>self-managed cluster"]
+
+    repo -->|"codex plugin add /<br/>claude plugin install"| agentA
+    repo -->|same plugin| agentB
+    mcpA -->|"HTTPS API / SQL"| dremioA
+    mcpB -->|"HTTPS API / SQL"| dremioB
+```
+
+One local MCP server process per agent session. No shared daemon; secrets stay in the environment.
 
 ## Runtime Model
 
@@ -15,7 +40,7 @@ The process is session-scoped:
 - Session A starts one local MCP server process.
 - Session B starts a separate local MCP server process.
 - Processes communicate with the agent over MCP stdio.
-- Processes read Dremio connection settings from the environment.
+- Processes read Dremio connection settings from the environment that started the agent. Codex and Claude Code do not read `.env` files themselves.
 - Each session can inherit different Dremio connection settings, so Session A and Session B can point to different Dremio Cloud projects or self-managed clusters.
 - The upstream server can also read `.env` and the default `~/.config/dremioai/config.yaml` fallback described in [config.md](config.md).
 - No shared daemon is expected or required.
@@ -46,7 +71,7 @@ The SQL skills work offline after plugin installation and do not require a local
 2. The installed plugin contributes the `dremio-mcp` MCP server definition.
 3. The client starts `uvx --from git+https://github.com/dremio/dremio-mcp.git dremio-mcp-server run`.
 4. `uvx` creates or reuses an isolated tool environment.
-5. The MCP server reads `DREMIOAI_DREMIO__*` environment variables.
+5. The MCP server reads `DREMIOAI_*` environment variables; see [config.md](config.md) for fallbacks and precedence.
 6. The agent calls Dremio MCP tools over local stdio.
 7. The MCP server talks to Dremio Cloud or the configured self-managed cluster.
 
