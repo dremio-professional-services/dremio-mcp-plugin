@@ -4,6 +4,12 @@ All notable changes to this project are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-11-19
+
+### Fixed
+
+- The MCP server no longer crashes on startup with `TypeError: Option() got an unexpected keyword argument 'click_type'`. Upstream `dremio-mcp` passes `click_type` to `typer.Option()`, which typer 0.29.0 removed, and its `typer` dependency has no upper bound. The launch command now adds `--with "typer<0.29"` until upstream is fixed.
+
 ## [0.5.0] - 2026-11-16
 
 ### Added

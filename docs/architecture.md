@@ -69,7 +69,7 @@ The SQL skills work offline after plugin installation and do not require a local
 
 1. User starts a Codex or Claude Code session.
 2. The installed plugin contributes the `dremio-mcp` MCP server definition.
-3. The client starts `uvx --from git+https://github.com/dremio/dremio-mcp.git dremio-mcp-server run`.
+3. The client starts `uvx --with "typer<0.29" --from git+https://github.com/dremio/dremio-mcp.git dremio-mcp-server run`. The `typer` upper bound works around an upstream incompatibility with typer 0.29 and later.
 4. `uvx` creates or reuses an isolated tool environment.
 5. The MCP server reads `DREMIOAI_*` environment variables; see [config.md](config.md) for fallbacks and precedence.
 6. The agent calls Dremio MCP tools over local stdio.

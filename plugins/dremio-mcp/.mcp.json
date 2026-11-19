@@ -3,6 +3,8 @@
     "dremio-mcp": {
       "command": "uvx",
       "args": [
+        "--with",
+        "typer<0.29",
         "--from",
         "git+https://github.com/dremio/dremio-mcp.git",
         "dremio-mcp-server",

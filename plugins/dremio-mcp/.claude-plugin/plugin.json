@@ -1,6 +1,6 @@
 {
   "name": "dremio-mcp",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Local Dremio MCP configuration plus independent Dremio Cloud and Enterprise SQL skills.",
   "author": {
     "name": "Dremio Professional Services"
