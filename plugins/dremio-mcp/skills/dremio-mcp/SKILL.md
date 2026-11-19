@@ -23,12 +23,25 @@ The plugin sets only `PYTHONWARNINGS=ignore` and no `DREMIOAI_*` defaults. Upstr
 
 ```text
 DREMIOAI_TOOLS__SERVER_MODE=FOR_SELF        recommended: FOR_SELF,FOR_DATA_PATTERNS
+                                            add DYNAMIC_REMOTE_TOOLS for server-side AI tools
 DREMIOAI_DREMIO__ENABLE_SEARCH=false        recommended: true
-DREMIOAI_DREMIO__ENABLE_REMOTE_TOOLS=true   server-side AI tools, if the Dremio backend offers them
 DREMIOAI_DREMIO__ALLOW_DML=false            read-only unless the user sets true
 ```
 
 Treat `ALLOW_DML=true` as write-capable. It can allow the MCP server to create Dremio views when supported by upstream tools and user permissions.
+
+## Tools
+
+Read one reference, only when the task needs it:
+
+| Need | Reference |
+|---|---|
+| Local tools of the MCP server, their parameters, required settings, and usage notes | [references/tools.md](references/tools.md) |
+| Server-side AI tools of Dremio Cloud (SQL validation, explain, functions, engines, job profiles, wikis, labels) and how to enable them | [references/dremio-cloud-ai-tools.md](references/dremio-cloud-ai-tools.md) |
+
+Core tools in every setup: `RunSqlQuery`, `GetSchemaOfTable`, `GetDescriptionOfTableOrSchema`, `GetTableOrViewLineage`, `GetUsefulSystemTableNames`. `SearchTableAndViews` needs `ENABLE_SEARCH=true`; `BuildUsageReport` needs a Dremio Cloud project ID. The server-side AI tools need `DYNAMIC_REMOTE_TOOLS` in `SERVER_MODE`.
+
+For platform SQL syntax, load `dremio-cloud-sql` or `dremio-enterprise-sql`; this skill covers the MCP server only.
 
 ## Usage Rules
 

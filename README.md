@@ -25,7 +25,7 @@ export DREMIOAI_DREMIO__PAT=@~/.dremio/token
 export DREMIOAI_DREMIO__PROJECT_ID="<project-id>"
 ```
 
-Codex and Claude Code do not read `.env` files, and the plugin sets no `DREMIOAI_*` defaults. The server runs read-only with the `FOR_SELF` tool set, plus any server-side AI tools your Dremio offers, unless you enable search, data-pattern tools, or DML. See [docs/config.md](docs/config.md) for all variables, `.env` usage, and precedence.
+Codex and Claude Code do not read `.env` files, and the plugin sets no `DREMIOAI_*` defaults. The server runs read-only with the `FOR_SELF` tool set unless you enable search, data-pattern tools, or DML. See [docs/config.md](docs/config.md) for all variables, `.env` usage, and precedence.
 
 ### Codex
 
@@ -63,7 +63,7 @@ docs/architecture.md                  local MCP runtime architecture
 examples/dremio-cloud.env             .env template for a Dremio Cloud project
 examples/dremio-software.env          .env template for self-managed Dremio Software
 plugins/dremio-mcp/.mcp.json          dremio-mcp MCP entry
-plugins/dremio-mcp/skills/dremio-mcp/ MCP configuration skill
+plugins/dremio-mcp/skills/dremio-mcp/ MCP configuration skill with tool references
 plugins/dremio-mcp/skills/dremio-cloud-sql/
                                         Current non-Classic Dremio Cloud SQL skill; load only for scoped SQL
                                         or metadata-query requests after platform confirmation

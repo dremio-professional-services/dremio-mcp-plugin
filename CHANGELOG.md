@@ -4,6 +4,16 @@ All notable changes to this project are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-11-19
+
+### Added
+
+- `dremio-mcp` skill references: `references/tools.md` (local MCP tools, parameters, required settings, usage notes) and `references/dremio-cloud-ai-tools.md` (server-side AI tools of Dremio Cloud and how to reach them with `DYNAMIC_REMOTE_TOOLS`). `SKILL.md` routes to them.
+
+### Fixed
+
+- Corrected the 0.5.0 statement that server-side AI tools are exposed by default. Over stdio, which this plugin uses, they are reachable only with `DYNAMIC_REMOTE_TOOLS` in `DREMIOAI_TOOLS__SERVER_MODE`; `DREMIOAI_DREMIO__ENABLE_REMOTE_TOOLS` affects only the streamable-HTTP transport and is no longer forwarded or documented.
+
 ## [0.6.0] - 2026-11-19
 
 ### Fixed
